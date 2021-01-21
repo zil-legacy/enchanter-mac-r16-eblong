@@ -1,0 +1,32 @@
+Assembling ENCHANTER.XZAP.1
+
+
+Inserting ENCHANTERFREQ.XZAP.1	(  626 bytes)
+Inserting ENCHANTERDAT.ZAP.1	(20493 bytes)
+Inserting SYNTAX.ZAP.1	(    0 bytes)
+Inserting MACROS.ZAP.1	(  144 bytes)
+Inserting CLOCK.ZAP.1	(  200 bytes)
+Inserting MAIN.ZAP.1	( 2213 bytes)
+Inserting PARSER.ZAP.1	( 5053 bytes)
+Inserting CRUFTY.XZAP.1	(   79 bytes)
+Inserting VERBS.ZAP.1	(12438 bytes)
+Inserting GLOBALS.ZAP.1	( 2787 bytes)
+Inserting TERROR.ZAP.1	( 4413 bytes)
+Inserting STAIR.ZAP.1	( 5073 bytes)
+Inserting MAGIC.ZAP.1	( 6577 bytes)
+Inserting KNOT.ZAP.1	( 1306 bytes)
+Inserting PURLOINED.ZAP.1	( 7368 bytes)
+Inserting CASTLE.ZAP.1	( 6249 bytes)
+Inserting TEMPLE.ZAP.1	( 3389 bytes)
+Inserting GALLERY.ZAP.1	( 2142 bytes)
+Inserting EGG.ZAP.1	( 1705 bytes)
+Inserting SLEEP.ZAP.1	( 2388 bytes)
+Inserting GEARS.ZAP.1	( 5676 bytes)
+Inserting OUTSIDE.ZAP.1	( 3361 bytes)
+Inserting ENCHANTERSTR.ZAP.1	(15588 bytes)
+21183 bytes of preload.
+
+109332 bytes (107K).
+24340 bytes too large for one-disk game on ATARI.
+255 objects.
+233 globals.

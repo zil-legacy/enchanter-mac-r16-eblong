@@ -1,0 +1,303 @@
+
+
+	.FUNCT	GO
+START::
+
+?FCN:	CALL	QUEUE,I-TIRED,MOVES-PER-DAY
+	PUT	STACK,0,1
+	CALL	QUEUE,I-THIRST,41
+	PUT	STACK,0,1
+	CALL	QUEUE,I-HUNGER,67
+	PUT	STACK,0,1
+	CALL	QUEUE,I-TIME,-1
+	PUT	STACK,0,1
+	CALL	QUEUE,I-SCURRY,5
+	PUT	STACK,0,1
+	CALL	QUEUE,I-MUNG-ROOM,50
+	PUT	STACK,0,1
+	CALL	QUEUE,I-GUARDS-ARRIVE,0
+	PUT	STACK,0,1
+	CALL	QUEUE,I-ADVENTURER,0
+	PUT	STACK,0,1
+	SET	'LIT,1
+	SET	'WINNER,PROTAGONIST
+	SET	'PLAYER,WINNER
+	SET	'HERE,WEST-FORK
+	SET	'P-IT-LOC,HERE
+	SET	'P-IT-OBJECT,0
+	FSET?	HERE,TOUCHBIT /?CND1
+	PRINTI	"It must be the warlock Krill. The odd disappearances, the mysterious dissolution of regions sacred to the Circle, the lessening of the Powers -- these could only be his handiwork. The Circle gathers and its leader, the esteemed Belboz, reveals to them an ancient document which portends evil days much like our own.
+
+""Krill's evil must be unmade,"" he begins, ""but to send a powerful Enchanter is ill-omened. It would be ruinous to reveal oversoon our full powers."" A ripple of concern spreads over the face of each Enchanter. Belboz pauses, and collects his resolve. ""Have hope! This has been written by a hand far wiser than mine!""
+
+He recites a short spell and you appear. Belboz approaches, transfixing you with his gaze, and hands you the document. The other Enchanters await his decree. ""These words, written ages ago, can have only one meaning. You, a novice Enchanter with but a few simple spells in your Book, must seek out Krill, explore the Castle he has overthrown, and learn his secrets. Only then may his vast evil be lessened or, with good fortune, destroyed.""
+
+The Circle rises and intones a richly woven spell, whose many textures imbue the small, darkened chamber with warmth and hope. There is a surge of power; you are Sent."
+	CRLF	
+	CRLF	
+	CALL	V-VERSION
+	CRLF	
+?CND1:	MOVE	WINNER,HERE
+	CALL	V-LOOK
+	CALL	MAIN-LOOP
+	JUMP	?FCN
+
+
+	.FUNCT	MAIN-LOOP,ICNT,OCNT,NUM,CNT,OBJ,TBL,V,PTBL,OBJ1,TMP,?TMP1
+?PRG1:	SET	'CNT,0
+	SET	'OBJ,0
+	SET	'PTBL,1
+	CALL	PARSER >P-WON
+	ZERO?	P-WON /?ELS5
+	GET	P-PRSI,P-MATCHLEN >ICNT
+	GET	P-PRSO,P-MATCHLEN >OCNT
+	ZERO?	OCNT \?ELS10
+	PUSH	OCNT
+	JUMP	?CND6
+?ELS10:	GRTR?	OCNT,1 \?ELS12
+	SET	'TBL,P-PRSO
+	ZERO?	ICNT \?ELS15
+	SET	'OBJ,0
+	JUMP	?CND13
+?ELS15:	GET	P-PRSI,1 >OBJ
+?CND13:	PUSH	OCNT
+	JUMP	?CND6
+?ELS12:	GRTR?	ICNT,1 \?ELS19
+	SET	'PTBL,0
+	SET	'TBL,P-PRSI
+	GET	P-PRSO,1 >OBJ
+	PUSH	ICNT
+	JUMP	?CND6
+?ELS19:	PUSH	1
+?CND6:	SET	'NUM,STACK
+	ZERO?	OBJ \?CND22
+	EQUAL?	ICNT,1 \?CND22
+	GET	P-PRSI,1 >OBJ
+?CND22:	EQUAL?	PRSA,V?WALK \?ELS29
+	CALL	PERFORM,PRSA,PRSO >V
+	JUMP	?CND27
+?ELS29:	ZERO?	NUM \?ELS31
+	GETB	P-SYNTAX,P-SBITS
+	BAND	STACK,P-SONUMS
+	ZERO?	STACK \?ELS34
+	CALL	PERFORM,PRSA >V
+	SET	'PRSO,0
+	JUMP	?CND27
+?ELS34:	ZERO?	LIT \?ELS36
+	PRINTI	"It's too dark to see."
+	CRLF	
+	JUMP	?CND27
+?ELS36:	PRINTI	"There isn't anything to "
+	GET	P-ITBL,P-VERBN >TMP
+	ZERO?	P-OFLAG \?THN46
+	ZERO?	P-MERGED /?ELS45
+?THN46:	GET	TMP,0
+	PRINTB	STACK
+	JUMP	?CND43
+?ELS45:	GETB	TMP,2 >?TMP1
+	GETB	TMP,3
+	CALL	WORD-PRINT,?TMP1,STACK
+?CND43:	PRINTI	"!"
+	CRLF	
+	SET	'V,0
+	JUMP	?CND27
+?ELS31:	SET	'P-NOT-HERE,0
+	SET	'P-MULT,0
+	GRTR?	NUM,1 \?CND54
+	SET	'P-MULT,1
+?CND54:	SET	'TMP,0
+?PRG57:	IGRTR?	'CNT,NUM \?ELS61
+	GRTR?	P-NOT-HERE,0 \?ELS64
+	PRINTI	"The "
+	EQUAL?	P-NOT-HERE,NUM /?CND67
+	PRINTI	"other "
+?CND67:	PRINTI	"object"
+	EQUAL?	P-NOT-HERE,1 /?CND74
+	PRINTI	"s"
+?CND74:	PRINTI	" that you mentioned "
+	EQUAL?	P-NOT-HERE,1 /?ELS83
+	PRINTI	"are"
+	JUMP	?CND81
+?ELS83:	PRINTI	"is"
+?CND81:	PRINTI	"n't here."
+	CRLF	
+	JUMP	?REP58
+?ELS64:	ZERO?	TMP \?REP58
+	PRINTI	"I don't know what you're referring to."
+	CRLF	
+	JUMP	?REP58
+?ELS61:	ZERO?	PTBL /?ELS100
+	GET	P-PRSO,CNT >OBJ1
+	JUMP	?CND98
+?ELS100:	GET	P-PRSI,CNT >OBJ1
+?CND98:	ZERO?	PTBL /?ELS108
+	PUSH	OBJ1
+	JUMP	?CND104
+?ELS108:	PUSH	OBJ
+?CND104:	SET	'PRSO,STACK
+	ZERO?	PTBL /?ELS116
+	PUSH	OBJ
+	JUMP	?CND112
+?ELS116:	PUSH	OBJ1
+?CND112:	SET	'PRSI,STACK
+	EQUAL?	PRSA,V?ERASE-LINE,V?MAKE-LINE \?ELS122
+	JUMP	?CND120
+?ELS122:	GRTR?	NUM,1 /?THN125
+	GET	P-ITBL,P-NC1
+	GET	STACK,0
+	EQUAL?	STACK,W?ALL \?CND120
+?THN125:	EQUAL?	OBJ1,NOT-HERE-OBJECT \?ELS129
+	INC	'P-NOT-HERE
+	JUMP	?PRG57
+?ELS129:	EQUAL?	P-GETFLAGS,P-ALL \?ELS131
+	EQUAL?	PRSA,V?TAKE \?ELS131
+	LOC	OBJ1
+	EQUAL?	STACK,WINNER,HERE /?ELS131
+	JUMP	?PRG57
+?ELS131:	EQUAL?	PRSA,V?TAKE \?ELS135
+	ZERO?	PRSI /?ELS135
+	GET	P-ITBL,P-NC1
+	GET	STACK,0
+	EQUAL?	STACK,W?ALL \?ELS135
+	IN?	PRSO,PRSI /?ELS135
+	JUMP	?PRG57
+?ELS135:	EQUAL?	OBJ1,IT \?ELS142
+	PRINTD	P-IT-OBJECT
+	JUMP	?CND140
+?ELS142:	PRINTD	OBJ1
+?CND140:	PRINTI	": "
+?CND120:	SET	'TMP,1
+	CALL	PERFORM,PRSA,PRSO,PRSI >V
+	EQUAL?	V,M-FATAL \?PRG57
+	JUMP	?CND27
+?REP58:	
+?CND27:	EQUAL?	V,M-FATAL /?CND150
+	LOC	WINNER
+	EQUAL?	STACK,PRSO \?CND153
+	SET	'PRSO,0
+?CND153:	LOC	WINNER
+	GETP	STACK,P?ACTION
+	CALL	STACK,M-END >V
+?CND150:	EQUAL?	PRSA,V?RESTORE,V?SAVE,V?AGAIN /?CND156
+	EQUAL?	PRSA,V?WAIT,V?VERSION,V?SCORE \?ELS158
+	JUMP	?CND156
+?ELS158:	SET	'L-PRSA,PRSA
+	SET	'L-PRSO,PRSO
+	SET	'L-PRSI,PRSI
+?CND156:	EQUAL?	V,M-FATAL \?CND3
+	SET	'P-CONT,0
+	JUMP	?CND3
+?ELS5:	SET	'P-CONT,0
+?CND3:	ZERO?	P-WON /?PRG1
+	EQUAL?	PRSA,V?SUPER-BRIEF,V?BRIEF,V?TELL /?PRG1
+	EQUAL?	PRSA,V?VERSION,V?SAVE,V?VERBOSE /?PRG1
+	EQUAL?	PRSA,V?RESTORE \?ELS174
+	JUMP	?PRG1
+?ELS174:	CALL	CLOCKER >V
+	JUMP	?PRG1
+
+
+	.FUNCT	PERFORM,A,O=0,I=0,V,OA,OO,OI
+	SET	'OA,PRSA
+	SET	'OO,PRSO
+	SET	'OI,PRSI
+	EQUAL?	IT,I,O \?CND1
+	EQUAL?	P-IT-LOC,HERE /?CND1
+	PRINTI	"I don't see what you are referring to."
+	CRLF	
+	RETURN	2
+?CND1:	EQUAL?	O,IT \?CND10
+	SET	'O,P-IT-OBJECT
+?CND10:	EQUAL?	I,IT \?CND13
+	SET	'I,P-IT-OBJECT
+?CND13:	SET	'PRSA,A
+	SET	'PRSO,O
+	ZERO?	PRSO /?CND16
+	EQUAL?	PRSA,V?WALK /?CND16
+	SET	'P-IT-OBJECT,PRSO
+	SET	'P-IT-LOC,HERE
+?CND16:	SET	'PRSI,I
+	EQUAL?	NOT-HERE-OBJECT,PRSO,PRSI \?ELS23
+	CALL	NOT-HERE-OBJECT-F >V
+	ZERO?	V /?ELS23
+	SET	'P-WON,0
+	JUMP	?CND21
+?ELS23:	SET	'O,PRSO
+	SET	'I,PRSI
+	GETP	WINNER,P?ACTION
+	CALL	STACK >V
+	ZERO?	V /?ELS30
+	JUMP	?CND21
+?ELS30:	LOC	WINNER
+	GETP	STACK,P?ACTION
+	CALL	STACK,M-BEG >V
+	ZERO?	V /?ELS32
+	JUMP	?CND21
+?ELS32:	GET	PREACTIONS,A
+	CALL	STACK >V
+	ZERO?	V /?ELS34
+	JUMP	?CND21
+?ELS34:	ZERO?	I /?ELS36
+	GETP	I,P?ACTION
+	CALL	STACK >V
+	ZERO?	V /?ELS36
+	JUMP	?CND21
+?ELS36:	ZERO?	O /?ELS40
+	EQUAL?	A,V?WALK /?ELS40
+	LOC	O
+	ZERO?	STACK /?ELS40
+	LOC	O
+	GETP	STACK,P?CONTFCN
+	CALL	STACK >V
+	ZERO?	V /?ELS40
+	JUMP	?CND21
+?ELS40:	ZERO?	O /?ELS44
+	EQUAL?	A,V?WALK /?ELS44
+	GETP	O,P?ACTION
+	CALL	STACK >V
+	ZERO?	V /?ELS44
+	JUMP	?CND21
+?ELS44:	GET	ACTIONS,A
+	CALL	STACK >V
+	ZERO?	V /?CND21
+?CND21:	SET	'PRSA,OA
+	SET	'PRSO,OO
+	SET	'PRSI,OI
+	RETURN	V
+
+
+	.FUNCT	I-TIME
+	EQUAL?	HASTED?,ME \?ELS3
+	MOD	MOVES,2
+	ZERO?	STACK /TRUE
+?ELS3:	IGRTR?	'TOD,127 \?CND1
+	SET	'TOD,0
+	SUB	NIGHTFALL,20 >NIGHTFALL
+	INC	'LOSSAGE
+	SUB	DUSK,20 >DUSK
+	ADD	MOLESTED,5 >MOLESTED
+	ADD	MUNCHED,5 >MUNCHED
+	LESS?	NIGHTFALL,0 \?CND1
+	PRINTI	"Belboz appears before you, in a magical sending. He speaks, his voice soft and saddened. ""You have failed. Universal night has now fallen. Krill and his creatures now may freely roam the earth. The power of the Circle is diminished, if not broken. I go to prepare the last defense."" The sending vanishes."
+	CRLF	
+	CALL	FINISH
+?CND1:	EQUAL?	TOD,NIGHTFALL \?ELS17
+	LOC	PROTAGONIST
+	FSET?	STACK,ONBIT \?ELS17
+	PRINTI	"The darkened sky is now full of bright stars. It is night."
+	CRLF	
+	LESS?	NIGHTFALL,97 \TRUE
+	PRINTR	"Today seemed shorter than yesterday, somehow."
+?ELS17:	EQUAL?	TOD,SUNRISE \?ELS28
+	LOC	PROTAGONIST
+	FSET?	STACK,ONBIT \?ELS28
+	PRINTR	"The sun has now risen above the hills."
+?ELS28:	EQUAL?	TOD,DUSK \FALSE
+	LOC	PROTAGONIST
+	FSET?	STACK,ONBIT \FALSE
+	PRINTI	"The sun starts to set behind the Lonely Mountain in the west."
+	CRLF	
+	LESS?	NIGHTFALL,97 \TRUE
+	PRINTR	"The day is coming to an end earlier than you would have expected."
+
+	.ENDI
